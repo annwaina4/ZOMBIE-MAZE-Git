@@ -11,19 +11,19 @@ public class playerController : MonoBehaviour
 
     //private float stepForce = 2000.0f;
     //private float maxStepSpeed = 2.0f;
-    //private float stepVelocity = 5f;
+    private float stepVelocity = 2.3f;
     //ジャンプ速度減衰
-    private float damping = -3000f;
+    //private float damping = -3000f;
     private float groundLevel = 0.1f;
-    private float jumpforce = 30000.0f;
+    //private float jumpforce = 30000.0f;
 
 
     private Vector3 previousPosition;
 
-    private float maxHP = 100;
+    private float maxHP = 3f;
     private float nowHP;
-    //public Slider slider;
-    private int itemCounter = 0;
+    public Slider slider;
+    
 
     static public bool isEnd = false;
 
@@ -46,7 +46,7 @@ public class playerController : MonoBehaviour
         //guardPoint = transform.Find("guardPoint").gameObject;
 
         //Sliderを最大にする
-        //slider.value = 1;
+        slider.value = 1;
         nowHP = maxHP;
 
     }
@@ -70,8 +70,8 @@ public class playerController : MonoBehaviour
         if (isEnd == false)
         {
             //プレーヤーの速度
-            float speedx = Mathf.Abs(this.myRigidbody.velocity.x);
-            float speedz = Mathf.Abs(this.myRigidbody.velocity.z);
+            //float speedx = Mathf.Abs(this.myRigidbody.velocity.x);
+            //float speedz = Mathf.Abs(this.myRigidbody.velocity.z);
 
             bool isGround = (transform.position.y > this.groundLevel) ? false : true;
 
@@ -81,29 +81,38 @@ public class playerController : MonoBehaviour
             if (Input.GetKey(KeyCode.RightArrow))
             {
                 //key = 1;
-                myRigidbody.velocity = new Vector3(3.0f, 0f, 0f);
+                myRigidbody.velocity = new Vector3(stepVelocity, myRigidbody.velocity.y, 0f);
                 myanimator.SetInteger("speed", 1);
+                transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
             }
 
-            if (Input.GetKey(KeyCode.LeftArrow))
+            else if (Input.GetKey(KeyCode.LeftArrow))
             {
                 //key = -1;
-                myRigidbody.velocity = new Vector3(-3.0f, 0f, 0f);
+                myRigidbody.velocity = new Vector3(-stepVelocity, myRigidbody.velocity.y, 0f);
                 myanimator.SetInteger("speed", 1);
+                transform.rotation = Quaternion.Euler(0.0f, 270.0f, 0.0f);
             }
 
-            if (Input.GetKey(KeyCode.UpArrow))
+            else if (Input.GetKey(KeyCode.UpArrow))
             {
                 //key = 1;
-                myRigidbody.velocity = new Vector3(0f, 0f, 3.0f);
+                myRigidbody.velocity = new Vector3(0f, myRigidbody.velocity.y, stepVelocity);
                 myanimator.SetInteger("speed", 1);
+                transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
             }
 
-            if (Input.GetKey(KeyCode.DownArrow))
+            else if (Input.GetKey(KeyCode.DownArrow))
             {
                 //key = -1;
-                myRigidbody.velocity = new Vector3(0f, 0f, -3.0f);
+                myRigidbody.velocity = new Vector3(0f, myRigidbody.velocity.y, -stepVelocity);
                 myanimator.SetInteger("speed", 1);
+                transform.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
+            }
+            else
+            {
+                myRigidbody.velocity = new Vector3(0f, myRigidbody.velocity.y, 0f);
+                myanimator.SetInteger("speed", 0);
             }
 
             /*if (Input.GetKey(KeyCode.Space))
@@ -112,32 +121,37 @@ public class playerController : MonoBehaviour
                 myRigidbody.AddForce(0f, 100000f, 0f);
             }*/
 
-            if (speedx < 0.1f && speedz < 0.1f)
-            {
-                myanimator.SetInteger("speed", 0);
-            }
+            //if (speedx < 0.1f && speedz < 0.1f)
+            //{
+            //    myanimator.SetInteger("speed", 0);
+            //}
 
+            /*
             Vector3 direction = transform.position - previousPosition;
             previousPosition = transform.position;
             if(direction.magnitude>0.01f)
             {
                 transform.rotation = Quaternion.LookRotation(direction);
             }
+            */
 
             //if (transform.position.y > -0.1f)
             //{
+                /*
                 if (Input.GetKeyDown(KeyCode.Space) && isGround)
                 {
-                    myRigidbody.AddForce(0, this.jumpforce,0);
+                    //myRigidbody.AddForce(0, this.jumpforce,0);
+                    myRigidbody.AddForce(new Vector3(0, 500.0f, 0), ForceMode.Impulse);
                 }
+                */
 
-                if (Input.GetKey(KeyCode.Space) == false)
-                {
-                    if (myRigidbody.velocity.y > 0)
-                    {
-                        myRigidbody.AddForce(0, this.damping,0);
-                    }
-                }
+                //if (Input.GetKey(KeyCode.Space) == false)
+                //{
+                //    if (myRigidbody.velocity.y > 0)
+                //    {
+                //        myRigidbody.AddForce(0, this.damping,0);
+                //    }
+                //}
             //}
 
             //**********************************************************************
@@ -176,10 +190,15 @@ public class playerController : MonoBehaviour
             */
             if (nowHP <= 0)
             {
-                isEnd = true;
                 myanimator.SetBool("die", true);
-                //GameObject.Find("Canvas").GetComponent<UIController>().gameLose();
+                isEnd = true;
+                GameObject.Find("Canvas").GetComponent<UIController>().gameOver();
             }
+        }
+
+        if(GameObject.Find("Canvas").GetComponent<UIController>().itemCounter==7)
+        {
+            isEnd = true;
         }
 
         if (isEnd)
@@ -190,7 +209,7 @@ public class playerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 isEnd = false;
-                SceneManager.LoadScene("Maze 1");
+                SceneManager.LoadScene("title");
             }
         }
     }
@@ -213,6 +232,8 @@ public class playerController : MonoBehaviour
 
                     nowHP -= 1f;
 
+                    GetComponent<AudioSource>().Play();
+
                     /*foreach (ContactPoint point in other.contacts)
                     {
                         Instantiate(effectPrefab, (Vector3)point.point, Quaternion.identity);
@@ -221,7 +242,7 @@ public class playerController : MonoBehaviour
                     //GetComponent<AudioSource>().Play();
 
                     //HPをSliderに反映
-                    //slider.value = (float)nowHP / (float)maxHP;
+                    slider.value = (float)nowHP / (float)maxHP;
                     //}
                 }
 
@@ -244,9 +265,11 @@ public class playerController : MonoBehaviour
         {
             if (other.gameObject.tag == "food")
             {
-                itemCounter++;
                 Destroy(other.gameObject, 0.1f);
                 Instantiate(effectPrefab, other.gameObject.transform.position, Quaternion.identity);
+                GameObject.Find("Canvas").GetComponent<UIController>().itemCounter++;
+                GameObject.Find("Canvas").GetComponent<UIController>().Addscore();
+                GameObject.Find("ItemBGM").GetComponent<AudioSource>().Play();
             }
         }
     }

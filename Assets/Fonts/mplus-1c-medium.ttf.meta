@@ -1,7 +1,5 @@
 fileFormatVersion: 2
-guid: a9eaa260284615e4e8d1e47731e2e98a
-timeCreated: 1520417696
-licenseType: Pro
+guid: e282397d171c538419def001e94fb034
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -13,11 +11,14 @@ TrueTypeFontImporter:
   fontName: M+ 1c
   fontNames:
   - M+ 1c
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 28efdb56e40027647b8075734e1f8919, type: 3}
+  - {fileID: 12800000, guid: 6e8bcc2d37d3f554b813a105645f87cd, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1
   useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
   userData: 
   assetBundleName: 
   assetBundleVariant: 

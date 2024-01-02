@@ -13,7 +13,7 @@ public class effectController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Invoke("Destroy", 0.3f);        
+        Invoke("Destroy", 0.5f);        
     }
 
     private void Destroy()
