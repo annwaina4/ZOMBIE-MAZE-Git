@@ -130,23 +130,27 @@ public class zombieController : MonoBehaviour
                     //}
                 }
 
-                //プレーヤーが近い時
-                if (length < enemyLength)
+                if(Mathf.Abs(Mathf.DeltaAngle(direction,transform.eulerAngles.y))<30f)
                 {
-                    //タイマーリセット
-                    timeCounter = 0f;
+                    //プレーヤーが近い時
+                    if (length < enemyLength)
+                    {
+                        //タイマーリセット
+                        timeCounter = 0f;
 
-                    //アニメーション　攻撃
-                    nav.isStopped = true;
+                        //アニメーション　攻撃
+                        nav.isStopped = true;
 
-                    myanimator.SetTrigger("attack");
-                    //myanimator.SetInteger("speed", 0);
+                        myanimator.SetTrigger("attack");
+                        //myanimator.SetInteger("speed", 0);
 
-                    //Debug.Log("攻撃: " + Time.time);
+                        //Debug.Log("攻撃: " + Time.time);
 
-                    //状態の遷移（切り替えステート）
-                    stateNumber = 2;
+                        //状態の遷移（切り替えステート）
+                        stateNumber = 2;
+                    }
                 }
+                
             }
 
             if (stateNumber == 1)
@@ -162,23 +166,26 @@ public class zombieController : MonoBehaviour
 
                 }
 
-                //プレーヤーが近い時
-                if (length < enemyLength)
+                if (Mathf.Abs(Mathf.DeltaAngle(direction, transform.eulerAngles.y)) < 30f)
                 {
-                    //タイマーリセット
-                    timeCounter = 0f;
+                    //プレーヤーが近い時
+                    if (length < enemyLength)
+                    {
+                        //タイマーリセット
+                        timeCounter = 0f;
 
-                    //アニメーション　攻撃
-                    nav.isStopped = true;
+                        //アニメーション　攻撃
+                        nav.isStopped = true;
 
-                    myanimator.SetTrigger("attack");
-                    //myanimator.SetInteger("speed", 0);
+                        myanimator.SetTrigger("attack");
+                        //myanimator.SetInteger("speed", 0);
 
-                    //Debug.Log("攻撃: " + Time.time);
+                        //Debug.Log("攻撃: " + Time.time);
 
-                    //状態の遷移（切り替えステート）
-                    stateNumber = 2;
-                }
+                        //状態の遷移（切り替えステート）
+                        stateNumber = 2;
+                    }
+                }                    
             }
 
             //モーション切り替え
@@ -198,26 +205,24 @@ public class zombieController : MonoBehaviour
             }
         }
 
-            //**************************************************************************************************************
-            //ゲーム‐オーバー監視（追加）
-            //**************************************************************************************************************
+        //**************************************************************************************************************
+        //ゲーム‐オーバー監視（追加）
+        //**************************************************************************************************************
 
-            if (playerController.isEnd)
-            {
-                nav.isStopped = true;
-                //アニメーション　待機
-                this.myanimator.SetInteger("speed", 0);
-                //ステートパターンを停止
-                stateNumber = -1;
-                //myRigidbody.velocity = Vector3.zero;
-                //myRigidbody.isKinematic = true;
-                //自由落下を停止
-                myRigidbody.useGravity = false;
-                //衝突をなくす
-                GetComponent<CapsuleCollider>().enabled = false;
-            }
-        
-        
+        if (playerController.isEnd)
+        {
+            nav.isStopped = true;
+            //アニメーション　待機
+            this.myanimator.SetInteger("speed", 0);
+            //ステートパターンを停止
+            stateNumber = -1;
+            //myRigidbody.velocity = Vector3.zero;
+            //myRigidbody.isKinematic = true;
+            //自由落下を停止
+            myRigidbody.useGravity = false;
+            //衝突をなくす
+            GetComponent<CapsuleCollider>().enabled = false;
+        }        
     }
 
     void attackEvent()
