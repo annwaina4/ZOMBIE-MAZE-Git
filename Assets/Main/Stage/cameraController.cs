@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class cameraController : MonoBehaviour
 {
-    private float cameraDistanceX;
     private float cameraDistanceZ;
     GameObject player;
+    //private float cameraDistanceX;
     void Start()
     {
         player = GameObject.Find("player");
-        cameraDistanceX = player.transform.position.x - transform.position.x;
         cameraDistanceZ = player.transform.position.z - transform.position.z;
+        //cameraDistanceX = player.transform.position.x - transform.position.x;
     }
 
     // Update is called once per frame
